@@ -696,13 +696,7 @@ class Chain:
         transfer_rates : openmc.deplete.TransferRates
             Instance of openmc.deplete.TransferRates
         materials : string or two-tuple of strings
-            Two cases are possible:
-
-            1) Material ID as string:
-            Nuclide transfer only. In this case the transfer rate terms will be
-            subtracted from the respective depletion matrix
-
-            2) Two-tuple of material IDs as strings:
+            Two-tuple of material IDs as strings:
             Nuclide transfer from one material into another.
             The pair is assumed to be
             ``(destination_material, source_material)``, where
@@ -722,25 +716,14 @@ class Chain:
         for i, nuclide in enumerate(self.nuclides):
             element = re.split(r'\d+', nuclide.name)[0]
             # Build transfer terms matrices
-            if isinstance(materials, str):
-                material = materials
-                components = transfer_rates.get_components(material)
-                if element in components:
-                    matrix[i, i] = transfer_rates.get_transfer_rate(material, element)
-                elif nuclide.name in components:
-                    matrix[i, i] = transfer_rates.get_transfer_rate(material, nuclide.name)
-                else:
-                    matrix[i, i] = 0.0
-            #Build transfer terms matrices
-            elif isinstance(materials, tuple):
-                destination_material, material = materials
-                if destination_material in transfer_rates.get_destination_materials(material, element):
-                    matrix[i, i] = transfer_rates.get_transfer_rate(material, element, destination_material)
-                elif destination_material in transfer_rates.get_destination_materials(material, nuclide.name):
-                    matrix[i, i] = transfer_rates.get_transfer_rate(material, nuclide.name, destination_material)
-                else:
-                    matrix[i, i] = 0.0
-            #Nothing else is allowed
+            destination_material, material = materials
+            if destination_material in transfer_rates.get_destination_materials(material, element):
+                matrix[i, i] = transfer_rates.get_transfer_rate(material, element, destination_material)
+            elif destination_material in transfer_rates.get_destination_materials(material, nuclide.name):
+                matrix[i, i] = transfer_rates.get_transfer_rate(material, nuclide.name, destination_material)
+            else:
+                matrix[i, i] = 0.0
+
         n = len(self)
         matrix_dok = sp.dok_matrix((n, n))
         dict.update(matrix_dok, matrix)

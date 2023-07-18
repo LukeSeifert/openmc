@@ -96,8 +96,7 @@ def deplete(func, chain, n, rates, dt, matrix_func=None, transfer_rates=None,
     if transfer_rates is not None:
         # Calculate transfer rate terms as diagonal matrices
         transfers = map(chain.form_rr_term, repeat(transfer_rates),
-                        transfer_rates.local_mats,
-                        transfer_rates.index_transfer[0])
+                        transfer_rates.index_transfer)
         # Subtract transfer rate terms from Bateman matrices
         matrices = [matrix - transfer for (matrix, transfer) in zip(matrices,
                                                                     transfers)]

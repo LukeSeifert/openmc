@@ -127,6 +127,8 @@ class TransferRates:
         check_type('component', component, str)
         if component in self.transfer_rates[material_id]:
             return list(self.transfer_rates[material_id][component].keys())
+        else:
+            return [None]
 
     def get_components(self, material):
         """Extract removing elements and/or nuclides for a given material

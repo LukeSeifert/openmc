@@ -79,8 +79,8 @@ class TransferRates:
 
         return str(val)
 
-    def get_transfer_rate(self, material, component):
-        """Return transfer rate for given material and element.
+    def get_transfer_rate(self, material, component, destination_material=None):
+        """Return transfer rate for given material, element, and destination.
 
         Parameters
         ----------
@@ -88,6 +88,8 @@ class TransferRates:
             Depletable material
         component : str
             Element or nuclide to get transfer rate value
+        destination_material : openmc.Material or str or int
+            Depleteable material
 
         Returns
         -------
@@ -97,9 +99,13 @@ class TransferRates:
         """
         material_id = self._get_material_id(material)
         check_type('component', component, str)
-        return self.transfer_rates[material_id][component][0]
+        if destination_material is None:
+            destination_id = None
+        elif destination_material is not None:
+            destination_id = self._get_material_id(destination_material)
+        return self.transfer_rates[material_id][component][destination_id]
 
-    def get_destination_material(self, material, component):
+    def get_destination_materials(self, material, component):
         """Return destination material for given material and
         component, if defined.
 
@@ -112,15 +118,15 @@ class TransferRates:
 
         Returns
         -------
-        destination_material_id : str
-            Depletable material ID to where the element or nuclide gets
+        destination_material_ids : list of str
+            List of depletable material ID to where the element or nuclide gets
             transferred
 
         """
         material_id = self._get_material_id(material)
         check_type('component', component, str)
         if component in self.transfer_rates[material_id]:
-            return self.transfer_rates[material_id][component][1]
+            return list(self.transfer_rates[material_id][component].keys())
 
     def get_components(self, material):
         """Extract removing elements and/or nuclides for a given material
@@ -193,6 +199,7 @@ class TransferRates:
                              f'"{transfer_rate_units}"')
 
         for component in components:
+            self.transfer_rates[material_id][component] = dict()
             current_components = self.transfer_rates[material_id].keys()
             split_component = re.split(r'\d+', component)
             element = split_component[0]
@@ -217,7 +224,7 @@ class TransferRates:
                                          f'where element {element} already has '
                                          'a transfer rate.')
 
-            self.transfer_rates[material_id][component] = \
-                transfer_rate / unit_conv, destination_material_id
+            self.transfer_rates[material_id][component][destination_material_id] = \
+                transfer_rate / unit_conv
             if destination_material_id is not None:
                 self.index_transfer.add((destination_material_id, material_id))

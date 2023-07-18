@@ -734,10 +734,10 @@ class Chain:
             #Build transfer terms matrices
             elif isinstance(materials, tuple):
                 destination_material, material = materials
-                if transfer_rates.get_destination_material(material, element) == destination_material:
-                    matrix[i, i] = transfer_rates.get_transfer_rate(material, element)
-                elif transfer_rates.get_destination_material(material, nuclide.name) == destination_material:
-                    matrix[i, i] = transfer_rates.get_transfer_rate(material, nuclide.name)
+                if destination_material in transfer_rates.get_destination_materials(material, element):
+                    matrix[i, i] = transfer_rates.get_transfer_rate(material, element, destination_material)
+                elif destination_material in transfer_rates.get_destination_materials(material, nuclide.name):
+                    matrix[i, i] = transfer_rates.get_transfer_rate(material, nuclide.name, destination_material)
                 else:
                     matrix[i, i] = 0.0
             #Nothing else is allowed

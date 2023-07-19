@@ -234,7 +234,7 @@ class TransferRates:
                                          f'where element {element} already has '
                                          'a transfer rate.')
             try: 
-                self.transfer_rate[material_id][component]
+                self.transfer_rates[material_id][component]
             except KeyError:
                 self.transfer_rates[material_id][component] = dict()
             self.transfer_rates[material_id][component][destination_material_id] = \

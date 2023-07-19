@@ -79,6 +79,14 @@ class TransferRates:
 
         return str(val)
 
+    def _update_index(self):
+        """Update the set of indexes for transfer rates for materials
+
+        """
+        for mat in self.local_mats:
+            if not any(t[1] == mat for t in self.index_transfer):
+                self.index_transfer.add((None, mat))
+
     def get_transfer_rate(self, material, component, destination_material=None):
         """Return transfer rate for given material, element, and destination.
 
@@ -90,6 +98,7 @@ class TransferRates:
             Element or nuclide to get transfer rate value
         destination_material : openmc.Material or str or int
             Depleteable material
+
 
         Returns
         -------
@@ -228,4 +237,5 @@ class TransferRates:
 
             self.transfer_rates[material_id][component][destination_material_id] = \
                 transfer_rate / unit_conv
-            self.index_transfer.add((destination_material_id, material_id))
+            if destination_material_id is not None:
+                self.index_transfer.add((destination_material_id, material_id))

@@ -94,6 +94,7 @@ def deplete(func, chain, n, rates, dt, matrix_func=None, transfer_rates=None,
                        *matrix_args)
 
     if transfer_rates is not None:
+        transfer_rates._update_index()
         # Calculate transfer rate terms as diagonal matrices
         transfers = map(chain.form_rr_term, repeat(transfer_rates),
                         transfer_rates.index_transfer)

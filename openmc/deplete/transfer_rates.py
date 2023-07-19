@@ -210,7 +210,6 @@ class TransferRates:
                              f'"{transfer_rate_units}"')
 
         for component in components:
-            self.transfer_rates[material_id][component] = dict()
             current_components = self.transfer_rates[material_id].keys()
             split_component = re.split(r'\d+', component)
             element = split_component[0]
@@ -234,7 +233,10 @@ class TransferRates:
                                          f'{component} to material {material_id} '
                                          f'where element {element} already has '
                                          'a transfer rate.')
-
+            try: 
+                self.transfer_rate[material_id][component]
+            except KeyError:
+                self.transfer_rates[material_id][component] = dict()
             self.transfer_rates[material_id][component][destination_material_id] = \
                 transfer_rate / unit_conv
             if destination_material_id is not None:

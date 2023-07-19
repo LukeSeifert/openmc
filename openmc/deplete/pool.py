@@ -100,7 +100,12 @@ def deplete(func, chain, n, rates, dt, matrix_func=None, transfer_rates=None,
         # Subtract transfer rate terms from Bateman matrices
         matrices = [matrix - transfer for (matrix, transfer) in zip(matrices,
                                                                     transfers)]
-
+        print(f'{transfer_rates.local_mats=}')
+        print(f'{transfer_rates.index_transfer=}')
+        print(f'{matrices=}')
+        print(f'{len(matrices)=}')
+        print(f'{transfer_rates.burnable_mats=}')
+        print(f'{len(transfer_rates.burnable_mats)=}')
         if len(transfer_rates.index_transfer) > 0:
             # Gather all on comm.rank 0
             matrices = comm.gather(matrices)

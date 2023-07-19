@@ -228,5 +228,4 @@ class TransferRates:
 
             self.transfer_rates[material_id][component][destination_material_id] = \
                 transfer_rate / unit_conv
-            if destination_material_id is not None:
-                self.index_transfer.add((destination_material_id, material_id))
+            self.index_transfer.add((destination_material_id, material_id))

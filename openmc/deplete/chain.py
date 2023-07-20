@@ -722,6 +722,11 @@ class Chain:
                     matrix[i, i] += transfer_rates.get_transfer_rate(material, element, destination_material)
                 elif destination_material in transfer_rates.get_destination_materials(material, nuclide.name):
                     matrix[i, i] += transfer_rates.get_transfer_rate(material, nuclide.name, destination_material)
+                if matrix[i, i] != 0:
+                    print(f'{i=}')
+                    print(f'{matrix[i,i]=}')
+                    print(f'{materials=}')
+                    print(f'{element=}')
 
         n = len(self)
         matrix_dok = sp.dok_matrix((n, n))

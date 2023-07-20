@@ -242,7 +242,9 @@ class TransferRates:
             if destination_material_id is not None:
                 # Check if material_id is already in index transfer
                 updated_index_transfer = self.index_transfer.copy()
+                input(self.index_transfer)
                 for transfer_tuple in self.index_transfer:
+                    input(transfer_tuple)
                     # If it is, modify destinations
                     if transfer_tuple[1] == material_id:
                         updated_index_transfer.remove(transfer_tuple)

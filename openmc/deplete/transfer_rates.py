@@ -85,7 +85,7 @@ class TransferRates:
         """
         for mat in self.local_mats:
             if not any(t[1] == mat for t in self.index_transfer):
-                self.index_transfer.add((None, mat))
+                self.index_transfer.add(((None,), mat))
 
     def get_transfer_rate(self, material, component, destination_material=None):
         """Return transfer rate for given material, element, and destination.
@@ -240,4 +240,12 @@ class TransferRates:
             self.transfer_rates[material_id][component][destination_material_id] = \
                 transfer_rate / unit_conv
             if destination_material_id is not None:
-                self.index_transfer.add((destination_material_id, material_id))
+                # Check if material_id is already in index transfer
+                for transfer_tuple in self.index_transfer:
+                    # If it is, modify destinations
+                    if transfer_tuple[1] == material_id:
+                        self.index_transfer.remove(transfer_tuple)
+                        updated_destinations = transfer_tuple[0] + (destination_material_id,)
+                        self.index_transfer.add((updated_destinations, material_id))
+                    else:
+                        self.index_transfer.add((destination_material_id, material_id))

@@ -713,14 +713,15 @@ class Chain:
         """
         matrix = defaultdict(float)
 
-        destination_material, material = materials
-        for i, nuclide in enumerate(self.nuclides):
-            element = re.split(r'\d+', nuclide.name)[0]
-            # Build transfer terms matrices
-            if destination_material in transfer_rates.get_destination_materials(material, element):
-                matrix[i, i] += transfer_rates.get_transfer_rate(material, element, destination_material)
-            elif destination_material in transfer_rates.get_destination_materials(material, nuclide.name):
-                matrix[i, i] += transfer_rates.get_transfer_rate(material, nuclide.name, destination_material)
+        destination_materials, material = materials
+        for destination_material in destination_materials:
+            for i, nuclide in enumerate(self.nuclides):
+                element = re.split(r'\d+', nuclide.name)[0]
+                # Build transfer terms matrices
+                if destination_material in transfer_rates.get_destination_materials(material, element):
+                    matrix[i, i] += transfer_rates.get_transfer_rate(material, element, destination_material)
+                elif destination_material in transfer_rates.get_destination_materials(material, nuclide.name):
+                    matrix[i, i] += transfer_rates.get_transfer_rate(material, nuclide.name, destination_material)
 
         n = len(self)
         matrix_dok = sp.dok_matrix((n, n))

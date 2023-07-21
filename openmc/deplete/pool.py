@@ -98,6 +98,7 @@ def deplete(func, chain, n, rates, dt, matrix_func=None, transfer_rates=None,
         print(f'{transfer_rates.index_transfer=}')
         print(f'{transfer_rates.transfer_rates=}')
         # Calculate transfer rate terms as diagonal matrices
+        print('Loss calc')
         transfers = map(chain.form_rr_term, repeat(transfer_rates),
                         transfer_rates.index_transfer)
         # Subtract transfer rate terms from Bateman matrices
@@ -114,6 +115,7 @@ def deplete(func, chain, n, rates, dt, matrix_func=None, transfer_rates=None,
                 n = [n_elm for n_mat in n for  n_elm in n_mat]
 
                 # Calculate transfer rate terms as diagonal matrices
+                print('Gain calc')
                 transfer_pair = {
                     mat_pair: chain.form_rr_term(transfer_rates, mat_pair)
                     for mat_pair in transfer_rates.index_transfer

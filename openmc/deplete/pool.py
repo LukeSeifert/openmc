@@ -129,7 +129,7 @@ def deplete(func, chain, n, rates, dt, matrix_func=None, transfer_rates=None,
                 # to be solved in one go
                 n_rows = n_cols = len(transfer_rates.burnable_mats)
                 rows = []
-                print(f'{transfer_rates._base_transfer=}')
+                print(f'{transfer_rates._base_transfers=}')
                 for row in range(n_rows):
                     cols = []
                     for col in range(n_cols):

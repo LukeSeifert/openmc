@@ -122,6 +122,8 @@ def deplete(func, chain, n, rates, dt, matrix_func=None, transfer_rates=None,
                     mat_pair: chain.form_rr_term(transfer_rates, mat_pair)
                     for mat_pair in transfer_rates.index_transfer
                 }
+                print(f'{transfer_pair=}')
+                print(f'{transfer_pair.keys()=}')
 
                 # Combine all matrices together in a single matrix of matrices
                 # to be solved in one go
@@ -132,12 +134,12 @@ def deplete(func, chain, n, rates, dt, matrix_func=None, transfer_rates=None,
                     for col in range(n_cols):
                         mat_pair = (transfer_rates.burnable_mats[row],
                                     transfer_rates.burnable_mats[col])
-                        print(mat_pair)
                         if row == col:
                             # Fill the diagonals with the Bateman matrices
                             cols.append(matrices[row])
                         elif mat_pair in transfer_rates.index_transfer:
                             # Fill the off-diagonals with the transfer pair matrices
+                            print(f'{mat_pair}=')
                             cols.append(transfer_pair[mat_pair])
                         else:
                             cols.append(None)

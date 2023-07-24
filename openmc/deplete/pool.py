@@ -132,6 +132,7 @@ def deplete(func, chain, n, rates, dt, matrix_func=None, transfer_rates=None,
                     for col in range(n_cols):
                         mat_pair = (transfer_rates.burnable_mats[row],
                                     transfer_rates.burnable_mats[col])
+                        print(mat_pair)
                         if row == col:
                             # Fill the diagonals with the Bateman matrices
                             cols.append(matrices[row])

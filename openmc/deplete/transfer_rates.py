@@ -49,6 +49,7 @@ class TransferRates:
         #initialize transfer rates container dict
         self.transfer_rates = {mat: {} for mat in self.burnable_mats}
         self.index_transfer = set()
+        self._base_transfers = set()
 
     def _get_material_id(self, val):
         """Helper method for getting material id from Material obj or name.
@@ -83,6 +84,7 @@ class TransferRates:
         """Update the set of indexes for transfer rates for materials
 
         """
+        self._base_transfers = self.index_transfer.copy()
         for mat in self.local_mats:
             if not any(t[1] == mat for t in self.index_transfer):
                 self.index_transfer.add(((None,), mat))

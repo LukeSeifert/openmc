@@ -714,6 +714,8 @@ class Chain:
         matrix = defaultdict(float)
 
         destination_materials, material = materials
+        if type(destination_materials) is not type(tuple()):
+            destination_materials = tuple(destination_materials)
         for destination_material in destination_materials:
             for i, nuclide in enumerate(self.nuclides):
                 element = re.split(r'\d+', nuclide.name)[0]

@@ -129,6 +129,7 @@ def deplete(func, chain, n, rates, dt, matrix_func=None, transfer_rates=None,
                 # to be solved in one go
                 n_rows = n_cols = len(transfer_rates.burnable_mats)
                 rows = []
+                print(f'{transfer_rates._base_transfer=}')
                 for row in range(n_rows):
                     cols = []
                     for col in range(n_cols):
@@ -139,6 +140,8 @@ def deplete(func, chain, n, rates, dt, matrix_func=None, transfer_rates=None,
                             cols.append(matrices[row])
                         elif mat_pair in transfer_rates._base_transfers:
                             # Fill the off-diagonals with the transfer pair matrices
+                            print(f'{row=}')
+                            print(f'{col=}')
                             print(f'{mat_pair}=')
                             cols.append(transfer_pair[mat_pair])
                         else:

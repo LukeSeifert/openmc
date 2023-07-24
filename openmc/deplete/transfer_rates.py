@@ -97,7 +97,7 @@ class TransferRates:
         self._base_transfers = self.index_transfer.copy()
         for mat in self.local_mats:
             if not any(t[1] == mat for t in self.index_transfer):
-                self.index_transfer.add(((None,), mat))
+                self.index_transfer.add((tuple(), mat))
         # Lump destinations together
         new_transfers = {}
         for transfers in self.index_transfer:
@@ -262,5 +262,4 @@ class TransferRates:
             self.transfer_rates[material_id][component][destination_material_id] = \
                 transfer_rate / unit_conv
 
-        if destination_material_id is not None:
-            self.index_transfer.add((destination_material_id, material_id))
+        self.index_transfer.add((destination_material_id, material_id))

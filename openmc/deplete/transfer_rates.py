@@ -80,6 +80,16 @@ class TransferRates:
 
         return str(val)
 
+    def _get_ordered_transfers(self):
+        """Helper method that provides transfer rates ordered by source ID
+        
+        Returns
+        -------
+        ordered_index_transfer : list of tuple
+            List of sorted material IDs defining flow sorted by source material
+        """
+        return sorted(self.index_transfer, key=lambda flow: flow[1])
+
     def _update_index(self):
         """Update the set of indexes for transfer rates for materials
 

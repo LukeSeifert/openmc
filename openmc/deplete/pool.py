@@ -100,6 +100,7 @@ def deplete(func, chain, n, rates, dt, matrix_func=None, transfer_rates=None,
         print(f'{transfer_rates.index_transfer=}')
         print(f'{transfer_rates.transfer_rates=}')
         ordered_index_transfer = transfer_rates._get_ordered_transfers()
+        print(f'{ordered_index_transfer=}')
         transfers = map(chain.form_rr_term, repeat(transfer_rates),
                         ordered_index_transfer)
         # Subtract transfer rate terms from Bateman matrices
